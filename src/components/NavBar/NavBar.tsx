@@ -11,6 +11,7 @@ export default function NavBar() {
         <NavLink to="/add-cart">Add Cart</NavLink>
         <NavLink to="/users">Users</NavLink>
         <NavLink to="/add-user">Add User</NavLink>
+        {/*  */}
       </nav>
     </section>
   );
