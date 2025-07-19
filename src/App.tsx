@@ -9,6 +9,7 @@ import Categories from "./pages/Categories/Categories";
 import Users from "./pages/Users/Users";
 import Signup from "./pages/Signup/Signup";
 import Signin from "./pages/Signin/Signin";
+import RestaurantMenu from "./components/RestaurantMenu/RestaurantMenu";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/restaurants/:restaurantId/menu" element={<RestaurantMenu />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/products" element={<Products />} />
             <Route path="/carts" element={<Carts />} />

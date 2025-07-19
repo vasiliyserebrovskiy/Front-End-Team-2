@@ -1,6 +1,7 @@
 <Route path="/" element={<MainLayout />}>
 <Route index element={<Home />} /> - главная [простой вариант - 12 случайных блюд] + (404 Ошибка)
 'https://fakerestaurantapi.runasp.net/api/Restaurant/items' - случайные 12 блюд
+
 <Route path="/about" element={<About />} /> - список магазинов 1,2,3....
 fetch('https://fakerestaurantapi.runasp.net/api/Restaurant')
 
