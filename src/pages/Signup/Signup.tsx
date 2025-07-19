@@ -1,5 +1,6 @@
 import { Field, Form, Formik } from "formik";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const SignupSchema = Yup.object().shape({
@@ -19,7 +20,8 @@ interface Credentials {
 
 export default function Signup() {
   const [message, setMessage] = useState("");
-
+  const [errMessage, setErrMessage] = useState("");
+  const navigate = useNavigate();
   async function fetchSignup(credentials: Credentials) {
     const res = await fetch(
       "https://thingproxy.freeboard.io/fetch/https://fakerestaurantapi.runasp.net/api/User/register",
@@ -34,6 +36,15 @@ export default function Signup() {
 
     if (res.ok) {
       setMessage("Successfully registered");
+      navigate("/sign-in");
+    }
+
+    if (!res.ok) {
+      const resObj = await res.json();
+
+      setErrMessage(
+        "Sign up error: status: " + res.status + ", message: " + resObj.message
+      );
     }
   }
 
@@ -41,6 +52,7 @@ export default function Signup() {
     <section className="flex flex-col justify-center items-center gap-[20px]">
       <h2>Sign Up</h2>
       {message ? <div>{message}</div> : null}
+      {errMessage ? <div className="text-red-500">{errMessage}</div> : null}
       <div className="flex flex-col gap-[20px]">
         <Formik
           initialValues={{
@@ -49,7 +61,8 @@ export default function Signup() {
           }}
           validationSchema={SignupSchema}
           onSubmit={(values, { resetForm }) => {
-            console.log(values);
+            setErrMessage("");
+            setMessage("");
             const data: Credentials = {
               userEmail: values.email,
               password: values.password,
