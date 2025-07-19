@@ -16,19 +16,18 @@ const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    async function fetchRestaurantsByType() {
+      setLoading(true);
+      const res = await fetch(
+        "https://corsproxy.io/?https://fakerestaurantapi.runasp.net/api/Restaurant"
+      );
+      const data: Restaurant[] = await res.json();
+      const filtered = data.filter((r) => r.type === type);
+      setRestaurants(filtered);
+      setLoading(false);
+    }
     fetchRestaurantsByType();
   }, [type]);
-
-  async function fetchRestaurantsByType() {
-    setLoading(true);
-    const res = await fetch(
-      "https://corsproxy.io/?https://fakerestaurantapi.runasp.net/api/Restaurant"
-    );
-    const data: Restaurant[] = await res.json();
-    const filtered = data.filter((r) => r.type === type);
-    setRestaurants(filtered);
-    setLoading(false);
-  }
 
   return (
     <div className="px-6 py-8">
