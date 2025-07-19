@@ -10,24 +10,27 @@ import Signup from "./pages/Signup/Signup";
 import Signin from "./pages/Signin/Signin";
 import NotFound from "./pages/NotFound/NotFound";
 import Cart from "./pages/Cart/Cart";
+import { AuthProvider } from "./providers/AuthProviders";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/sign-up" element={<Signup />} />
-            <Route path="/sign-in" element={<Signin />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/sign-up" element={<Signup />} />
+              <Route path="/sign-in" element={<Signin />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </>
   );
