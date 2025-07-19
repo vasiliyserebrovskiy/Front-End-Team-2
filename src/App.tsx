@@ -10,6 +10,7 @@ import Signup from "./pages/Signup/Signup";
 import Signin from "./pages/Signin/Signin";
 import NotFound from "./pages/NotFound/NotFound";
 import Cart from "./pages/Cart/Cart";
+import CategoryPage from "./pages/CategoryPage/CategoryPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/sign-up" element={<Signup />} />
             <Route path="/sign-in" element={<Signin />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/categories/:type" element={<CategoryPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
