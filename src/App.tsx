@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import Cart from "./pages/Cart/Cart";
 import { AuthProvider } from "./providers/AuthProviders";
 import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/sign-up" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
         </AuthProvider>

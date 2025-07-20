@@ -56,6 +56,7 @@ export default function Login() {
       setIsAuthorized(true);
 
       //TODO: create navigation to user page
+      navigate("/profile");
     }
   }
 
