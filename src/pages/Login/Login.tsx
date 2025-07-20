@@ -24,7 +24,7 @@ interface Credentials {
 //   usercode: string;
 // }
 
-export default function Signin() {
+export default function Login() {
   const [message, setMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ export default function Signin() {
 
   return (
     <section className="flex flex-col justify-center items-center gap-[20px]">
-      <h2>Sign In</h2>
+      <h2>Log In</h2>
       {message ? <div className="text-green-600">{message}</div> : null}
       {errMessage ? <div className="text-red-500">{errMessage}</div> : null}
       <div className="flex flex-col gap-[20px]">

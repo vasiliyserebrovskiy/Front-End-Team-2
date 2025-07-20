@@ -36,7 +36,7 @@ export default function Signup() {
 
     if (res.ok) {
       setMessage("Successfully registered");
-      navigate("/sign-in");
+      navigate("/login");
     }
 
     if (!res.ok) {

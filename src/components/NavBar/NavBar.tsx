@@ -16,7 +16,7 @@ export default function NavBar() {
         <NavLink to="/products">Products</NavLink>
         <NavLink to="/carts">Cart</NavLink>
         <NavLink to="/users">Users</NavLink>
-        <NavLink to="/sign-in">Sign in</NavLink>
+        <NavLink to="/login">Login</NavLink>
         {authUser?.userEmail}
 
         {isAuthorized ? (
