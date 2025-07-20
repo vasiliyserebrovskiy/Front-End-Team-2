@@ -12,6 +12,7 @@ import Cart from "./pages/Cart/Cart";
 import { AuthProvider } from "./providers/AuthProviders";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
+import ChangeUserPassword from "./pages/ChangeUserPassword/ChangeUserPassword";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<NotFound />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/change-password" element={<ChangeUserPassword />} />
             </Route>
           </Routes>
         </AuthProvider>

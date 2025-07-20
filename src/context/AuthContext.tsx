@@ -1,16 +1,13 @@
 import { createContext } from "react";
-
-export interface AuthUser {
-  userEmail: string;
-  password: string;
-  usercode: string;
-}
+import type { User } from "../types";
 
 interface AuthContextType {
-  authUser: AuthUser | undefined;
-  setAuthUser: (authUser: AuthUser | undefined) => void;
+  authUser: User | undefined;
+  setAuthUser: (authUser: User | undefined) => void;
   setIsAuthorized: (arg: boolean) => void;
   isAuthorized: boolean;
+  userMessage: string;
+  setUserMessage: (arg: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(

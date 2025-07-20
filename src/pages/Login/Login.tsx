@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuthUser } from "../../hooks/useAuthUser";
-import type { AuthUser } from "../../context/AuthContext";
+import type { User } from "../../types";
 
 const SigninSchema = Yup.object().shape({
   email: Yup.string().required("Required").email("Invalid email"),
@@ -20,15 +20,12 @@ interface Credentials {
   password: string;
 }
 
-// interface Usercode {
-//   usercode: string;
-// }
-
 export default function Login() {
   const [message, setMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const navigate = useNavigate();
-  const { setAuthUser, setIsAuthorized } = useAuthUser();
+  const { setAuthUser, setIsAuthorized, setUserMessage, userMessage } =
+    useAuthUser();
 
   async function fetchSignin(credentials: Credentials) {
     const res = await fetch(
@@ -43,19 +40,18 @@ export default function Login() {
     }
 
     if (res.ok) {
+      setUserMessage("");
       setMessage("Successfully logged in.");
-      const usercode = await res.json();
-      localStorage.setItem("usercode", usercode);
+      const resObj = await res.json();
+      localStorage.setItem("usercode", resObj.usercode);
       localStorage.setItem("isAuthorized", "true");
-      const authUser: AuthUser = {
+      const authUser: User = {
         userEmail: credentials.userEmail,
         password: credentials.password,
-        usercode: usercode,
+        usercode: resObj.usercode,
       };
       setAuthUser(authUser);
       setIsAuthorized(true);
-
-      //TODO: create navigation to user page
       navigate("/profile");
     }
   }
@@ -68,6 +64,7 @@ export default function Login() {
     <section className="flex flex-col justify-center items-center gap-[20px]">
       <h2>Log In</h2>
       {message ? <div className="text-green-600">{message}</div> : null}
+      {userMessage ? <div className="text-green-600">{userMessage}</div> : null}
       {errMessage ? <div className="text-red-500">{errMessage}</div> : null}
       <div className="flex flex-col gap-[20px]">
         <Formik
@@ -79,7 +76,6 @@ export default function Login() {
           onSubmit={(values, { resetForm }) => {
             setErrMessage("");
             setMessage("");
-            // console.log(values);
             const data: Credentials = {
               userEmail: values.email,
               password: values.password,

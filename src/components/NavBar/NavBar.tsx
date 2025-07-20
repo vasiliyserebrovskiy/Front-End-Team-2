@@ -1,11 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthUser } from "../../hooks/useAuthUser";
 
 export default function NavBar() {
   const { authUser, setIsAuthorized, isAuthorized } = useAuthUser();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setIsAuthorized(false);
+    navigate("/");
   };
   return (
     <section className="flex gap-3 bg-gray-400">
