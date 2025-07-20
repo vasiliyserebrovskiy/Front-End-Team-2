@@ -10,27 +10,29 @@ import Signup from "./pages/Signup/Signup";
 import Signin from "./pages/Signin/Signin";
 import NotFound from "./pages/NotFound/NotFound";
 import Cart from "./pages/Cart/Cart";
+import ProductPage from "./pages/ProductPage/ProductPage";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/sign-up" element={<Signup />} />
-            <Route path="/sign-in" element={<Signin />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+		<>
+			<BrowserRouter>
+				<Routes>
+					<Route path='/' element={<MainLayout />}>
+						<Route index element={<Home />} />
+						<Route path='/about' element={<About />} />
+						<Route path='/categories' element={<Categories />} />
+						<Route path='/products' element={<Products />} />
+						<Route path={'/product/:id'} element={<ProductPage />} />
+						<Route path='/cart' element={<Cart />} />
+						<Route path='/users' element={<Users />} />
+						<Route path='/sign-up' element={<Signup />} />
+						<Route path='/sign-in' element={<Signin />} />
+						<Route path='*' element={<NotFound />} />
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</>
+	);
 }
 
 export default App;

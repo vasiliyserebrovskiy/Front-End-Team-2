@@ -1,6 +1,9 @@
-export type Product = {
-	itemID: number;
-	itemName: string;
-	itemPrice: number;
-	imageUrl: string;
-};
+export interface Product {
+  itemID: number;
+  itemName: string;
+  itemDescription: string;
+  itemPrice: number;
+  restaurantName: string;
+  restaurantID: number;
+  imageUrl: string;
+}
