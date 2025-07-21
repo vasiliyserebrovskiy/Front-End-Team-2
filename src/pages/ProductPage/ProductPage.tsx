@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { formatPrice } from '../../utils/priceUtils';
 import type { RestaurantDetails } from '../Products/types';
 import { useCart } from '../../context/CartContext';
+import { animateFlyToCart } from '../Products/animateToCart';
 
 export interface Product {
 	itemID: number;
@@ -88,7 +89,7 @@ export default function ProductPage() {
 	if (!product) return <div className='p-8 text-center text-xl'>Product not found</div>;
 
 	return (
-		<div className='flex justify-center items-start min-h-screen bg-gray-100 pt-28 pb-20 px-2'>
+		<div className='flex justify-center items-start min-h-screen pt-28 pb-20 px-2'>
 			<div className='relative w-[90%] max-w-[1500px] flex items-center justify-between'>
 				<button onClick={goToPrevious} className='text-5xl text-gray-400 hover:text-yellow-500 px-0 pr-2 cursor-pointer opacity-30 hover:opacity-100 hover:scale-200 transition transform'>
 					&#x276E;
@@ -96,7 +97,7 @@ export default function ProductPage() {
 
 				<div className='flex flex-col md:flex-row bg-white w-[90%] shadow-xl rounded-[60px] md:rounded-[260px_60px_60px_260px] sm:rounded-[60px] overflow-visible px-6 py-8 items-center gap-8 relative'>
 					<div className='relative w-[260px] h-[260px] min-w-[260px] rounded-full overflow-hidden shadow-2xl z-10 flex items-center justify-center my-auto scale-125 border-0 border-x-white border-y-white'>
-						<img src={product.imageUrl} alt={product.itemName} className='w-full h-full object-cover' />
+						<img src={product.imageUrl} alt={product.itemName} className='product-image-big w-full h-full object-cover max-w-md rounded-2xl shadow-lg mx-auto' />
 						<div className='absolute top-17 left-0 bg-green-500 text-white text-xs px-3 py-1 rounded-full'>&nbsp;&nbsp;№{product.itemID}</div>
 					</div>
 
@@ -122,8 +123,15 @@ export default function ProductPage() {
 								to='#'
 								className='bg-pink-500 hover:bg-pink-600 hover:scale-108 text-white px-4 py-2 ml-1 rounded-full font-semibold transition transform hover:shadow-2xs'
 								onClick={e => {
-									e.preventDefault(); // prevent default link behavior
+									e.preventDefault(); // no page reload
 									addToCart(product); // add to cart
+
+									const imgEl = document.querySelector('.product-image-big');
+									const cartEl = document.querySelector('#cart-icon');
+
+									if (imgEl instanceof HTMLImageElement && cartEl instanceof HTMLElement && imgEl.complete) {
+										animateFlyToCart(imgEl, cartEl);
+									}
 								}}
 							>
 								Add to <span className='leading-none brightness-200 contrast-200 text-[20px]'>🛒</span>

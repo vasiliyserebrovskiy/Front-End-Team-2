@@ -4,12 +4,15 @@ import { useParams } from 'react-router-dom';
 import { formatPrice } from '../../utils/priceUtils';
 import type { Product, RestaurantDetails } from './types';
 import styles from './Products.module.css';
+import { useCart } from '../../context/CartContext';
+import { animateFlyToCart } from './animateToCart';
 
 export default function Products() {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [containerWidthClass, setContainerWidthClass] = useState('w-[70%]'); 
 	const { type } = useParams(); // из URL
 	const decodedType = decodeURIComponent(type || '');
+	const { addToCart } = useCart();
 
 useEffect(() => {
 	fetchProducts();
@@ -60,9 +63,10 @@ useEffect(() => {
 		}
 	}
 
+
 	return (
-		<div className=' bg-white min-h-screen p-6 '>
-			<h2 className='text-4xl font-bold text-center text-pink-500 mb-16 mt-6'>{decodedType ? decodedType : 'Product List'}</h2>
+		<div className=' bg-white min-h-screen p-1 '>
+			<h2 className='text-4xl font-bold text-center text-pink-500 mb-16 mt-1'>{decodedType ? decodedType : 'Product List'}</h2>
 			<div className='w-full flex justify-center'>
 				<div className={`flex flex-wrap justify-center gap-8 px-4 ${containerWidthClass}`}>
 					{products.map(p => (
@@ -73,17 +77,32 @@ before:content-[""] before:absolute before:top-0 before:left-0 before:w-full bef
 before:bg-gradient-to-r before:from-pink-400 before:to-transparent
 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300
 before:rounded-t-3xl rounded-tl-[220px] rounded-tr-[220px] rounded-b-[40px]
-max-w-[230px] w-[90%] sm:w-[290px] md:w-[230px] pt-16 pb-3 gap-x-0 mb-8 hover:-translate-y-10 shadow-xl'
+max-w-[230px] w-[90%] sm:w-[290px] md:w-[230px] pt-16 pb-3 gap-x-0 mb-8 hover:-translate-y-10 shadow-xl product-card'
 						>
 							<Link to={`/product/${p.itemID}`}>
 								<div className='-mt-16  w-58 h-58  border-0 border-white shadow-xl transition duration-300 rounded-full overflow-hidden'>
-									<img src={p.imageUrl} alt={p.itemName} className='w-full h-full object-cover' />
+									<img src={p.imageUrl} alt={p.itemName} className='w-full h-full object-cover product-image' data-id={p.itemID} />
 								</div>
 
 								<h3 className='text-2xl font-semibold text-gray-800 mb-0 p-1 pt-3'>{p.itemName}</h3>
 							</Link>
 							<span className='text-yellow-500 font-bold mb-2 text-4xl '>€{formatPrice(p.itemPrice)}</span>
-							<Link to={`/card/${p.itemID}`} className='bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-1 text-sm mb-1'>
+							{/* {`/card/${p.itemID}`}		 */}
+							<Link
+								to='#'
+								className='bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-1 text-sm mb-1'
+								onClick={e => {
+									e.preventDefault();
+									addToCart(p);
+
+									const imgEl = e.currentTarget.closest('.product-card')?.querySelector('.product-image');
+									const cartEl = document.querySelector('#cart-icon');
+
+									if (imgEl && cartEl) {
+										animateFlyToCart(imgEl as HTMLImageElement, cartEl as HTMLElement);
+									}
+								}}
+							>
 								Add to <span className='leading-none brightness-200 contrast-200 text-[20px]'>🛒</span>
 							</Link>
 						</div>

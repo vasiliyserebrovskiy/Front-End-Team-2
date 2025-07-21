@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Product } from '../pages/Products/types';
 
@@ -12,24 +12,37 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: ReactNode }) {
-	const [cart, setCart] = useState<Product[]>([]);
+export const CartProvider = ({ children }: { children: React.ReactNode }) => {
+	const [cart, setCart] = useState<Product[]>(() => {
+		const stored = localStorage.getItem('cart');
+		return stored ? JSON.parse(stored) : [];
+	});
 
-	const addToCart = (item: Product) => {
-		setCart(prev => [...prev, item]);
+	useEffect(() => {
+		localStorage.setItem('cart', JSON.stringify(cart));
+	}, [cart]);
+
+	const addToCart = (product: Product) => {
+		setCart(prev => [...prev, product]);
 	};
 
 	const removeFromCart = (id: number) => {
-		setCart(prev => prev.filter(item => item.itemID !== id));
+		setCart(prev => prev.filter(p => p.itemID !== id));
 	};
 
-	const clearCart = () => setCart([]);
+	const clearCart = () => {
+		setCart([]);
+	};
 
 	return <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>{children}</CartContext.Provider>;
-}
+};
 
-export function useCart() {
+
+
+export const useCart = () => {
 	const context = useContext(CartContext);
-	if (!context) throw new Error('useCart must be used within CartProvider');
+	if (!context) {
+		throw new Error('useCart must be used within CartProvider');
+	}
 	return context;
-}
+};
