@@ -7,3 +7,18 @@ export interface Product {
   restaurantID: number;
   imageUrl: string;
 }
+export interface RestaurantDetails {
+	restaurantID: number;
+	restaurantName: string;
+	address: string;
+	type: string;
+	parkingLot: boolean;
+}
+
+export interface RestaurantDetails {
+	restaurantID: number;
+	restaurantName: string;
+	address: string;
+	type: string;
+	parkingLot: boolean;
+}

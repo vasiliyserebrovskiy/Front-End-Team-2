@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../utils/priceUtils';
+import type { RestaurantDetails } from '../Products/types';
 
 export interface Product {
 	itemID: number;
@@ -11,14 +12,6 @@ export interface Product {
 	restaurantName: string;
 	restaurantID: number;
 	imageUrl: string;
-}
-
-interface RestaurantDetails {
-	restaurantID: number;
-	restaurantName: string;
-	address: string;
-	type: string;
-	parkingLot: boolean;
 }
 
 type EngFoodTemplate = (p: Product) => string;
@@ -110,15 +103,18 @@ export default function ProductPage() {
 							<h2 className='text-5xl font-bold text-gray-800 mb-3'>{product.itemName}</h2>
 							{restaurantType && (
 								<p className='text-sm text-pink-600 font-semibold mb-3'>
-									Category: <span className='bg-pink-100 text-pink-700 px-2 py-1 rounded-full'>{restaurantType}</span>
+									Category:{' '}
+									<Link to={`/products/${restaurantType}`} className='inline-block bg-pink-100 text-pink-700 px-2 py-1 rounded-full cursor-pointer no-underline transform hover:scale-110 hover:text-pink-800 transition-transform duration-300 ease-in-out'>
+										{restaurantType}
+									</Link>
 								</p>
 							)}
 							<p className='text-slate-700 text-base leading-snug mb-4'>{getEngGourmetDescription(product)}</p>
 						</div>
 						<div className='flex md:flex-row flex-col md:justify-start justify-center items-center gap-3 mt-6'>
 							<span className='text-yellow-500 font-extrabold text-4xl'>€{formatPrice(product.itemPrice)}</span>
-							<Link to={`/card/${product.itemID}`} className='bg-pink-500 hover:bg-pink-600 hover:scale-108 text-white px-6 py-2 rounded-full font-semibold transition transform hover:shadow-2xs'>
-								Buy now
+							<Link to={`/card/${product.itemID}`} className='bg-pink-500 hover:bg-pink-600 hover:scale-108 text-white px-4 py-2 ml-1 rounded-full font-semibold transition transform hover:shadow-2xs'>
+								Add to <span className='leading-none brightness-200 contrast-200 text-[20px]'>🛒</span>
 							</Link>
 						</div>
 					</div>
