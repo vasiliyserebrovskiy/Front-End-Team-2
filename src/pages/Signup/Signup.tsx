@@ -23,7 +23,7 @@ export default function Signup() {
   // const [message, setMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const navigate = useNavigate();
-  const { setUserMessage } = useAuthUser();
+  const { setSuccessMessage } = useAuthUser();
 
   async function fetchSignup(credentials: Credentials) {
     const res = await fetch(
@@ -38,7 +38,7 @@ export default function Signup() {
     );
 
     if (res.ok) {
-      setUserMessage("Successfully registered");
+      setSuccessMessage("Successfully registered");
       navigate("/login");
     }
 

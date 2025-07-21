@@ -1,34 +1,20 @@
-import { useCallback, useEffect, useState } from "react";
 import { useAuthUser } from "../../hooks/useAuthUser";
-import type { UserDetails } from "./types";
 import { useNavigate } from "react-router-dom";
 
-async function fetchUserDetailsFromApi(): Promise<UserDetails> {
-  const res = await fetch(`https://randomuser.me/api`);
-  const resObj = await res.json();
-  const userDetails = resObj.results[0];
-  return userDetails;
-}
-
 export default function Profile() {
-  const { authUser, setIsAuthorized, userMessage, setUserMessage } =
-    useAuthUser();
-  const [userDetail, setUserDetail] = useState<UserDetails | undefined>(
-    undefined
-  );
+  const {
+    authUser,
+    isAuthorized,
+    setIsAuthorized,
+    successMessage,
+    setSuccessMessage,
+    userDetails,
+  } = useAuthUser();
+
   const navigate = useNavigate();
 
-  const fetchUserDetails = useCallback(async () => {
-    const user = await fetchUserDetailsFromApi();
-    setUserDetail(user);
-  }, []);
-
-  useEffect(() => {
-    fetchUserDetails();
-  }, [fetchUserDetails]);
-
   async function handleDelete() {
-    setUserMessage("");
+    setSuccessMessage("");
     const res = await fetch(
       `https://thingproxy.freeboard.io/fetch/https://fakerestaurantapi.runasp.net/api/User/${authUser?.usercode}`,
       {
@@ -46,37 +32,37 @@ export default function Profile() {
   }
 
   const handleChangePassword = () => {
-    setUserMessage("");
+    setSuccessMessage("");
     navigate("/change-password");
   };
 
   return (
     <section className="flex flex-col justify-center items-center gap-[20px]">
       <h2>Profile</h2>
-      {userMessage ? <div className="text-green-600">{userMessage}</div> : null}
-      {userDetail ? (
+      {successMessage ? (
+        <div className="text-green-600">{successMessage}</div>
+      ) : null}
+      {isAuthorized && userDetails ? (
         <div className="flex flex-col justify-center items-center gap-[20px] border-2 rounded-[10px] p-2">
           <img
-            src={userDetail?.picture.large}
+            src={userDetails.img}
             alt="user picture"
             className="rounded-[20px]"
           />
           <p>
-            <span className="font-bold">Name:</span> {userDetail?.name.title}{" "}
-            {userDetail?.name.first} {userDetail?.name.last}
+            <span className="font-bold">Name: </span> {userDetails.name}
           </p>
 
           <p>
-            <span className="font-bold">Email:</span> {authUser?.userEmail}
+            <span className="font-bold">Email: </span> {authUser?.userEmail}
           </p>
           <p>
-            <span className="font-bold">Phone number:</span> {userDetail?.phone}
+            <span className="font-bold">Phone number: </span>{" "}
+            {userDetails.phone}
           </p>
           <p>
-            <span className="font-bold">Address:</span>{" "}
-            {userDetail.location.street.number},{" "}
-            {userDetail.location.street.name} street, {userDetail.location.city}
-            , {userDetail.location.state}, {userDetail.location.country}{" "}
+            <span className="font-bold">Address: </span>
+            {userDetails.address}
           </p>
           <div className="flex gap-2 ">
             <button
@@ -95,7 +81,9 @@ export default function Profile() {
             </button>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <p>You need to login first.</p>
+      )}
     </section>
   );
 }

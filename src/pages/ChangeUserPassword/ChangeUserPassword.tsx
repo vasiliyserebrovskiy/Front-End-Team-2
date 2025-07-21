@@ -15,7 +15,7 @@ const SignupSchema = Yup.object().shape({
 
 export default function ChangeUserPassword() {
   const [errMessage, setErrMessage] = useState("");
-  const { authUser, setUserMessage } = useAuthUser();
+  const { authUser, setSuccessMessage } = useAuthUser();
   const navigate = useNavigate();
 
   async function fetchChangePassword(password: string) {
@@ -31,7 +31,7 @@ export default function ChangeUserPassword() {
     );
 
     if (res.ok) {
-      setUserMessage("Password was successfully changed.");
+      setSuccessMessage("Password was successfully changed.");
       navigate("/profile");
     }
 

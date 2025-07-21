@@ -24,7 +24,7 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const navigate = useNavigate();
-  const { setAuthUser, setIsAuthorized, setUserMessage, userMessage } =
+  const { setAuthUser, setIsAuthorized, setSuccessMessage, successMessage } =
     useAuthUser();
 
   async function fetchSignin(credentials: Credentials) {
@@ -40,7 +40,7 @@ export default function Login() {
     }
 
     if (res.ok) {
-      setUserMessage("");
+      setSuccessMessage("");
       setMessage("Successfully logged in.");
       const resObj = await res.json();
       localStorage.setItem("usercode", resObj.usercode);
@@ -64,7 +64,9 @@ export default function Login() {
     <section className="flex flex-col justify-center items-center gap-[20px]">
       <h2>Log In</h2>
       {message ? <div className="text-green-600">{message}</div> : null}
-      {userMessage ? <div className="text-green-600">{userMessage}</div> : null}
+      {successMessage ? (
+        <div className="text-green-600">{successMessage}</div>
+      ) : null}
       {errMessage ? <div className="text-red-500">{errMessage}</div> : null}
       <div className="flex flex-col gap-[20px]">
         <Formik

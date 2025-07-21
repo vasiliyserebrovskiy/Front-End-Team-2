@@ -18,8 +18,7 @@ interface Picture {
   medium: string;
   thumbnail: string;
 }
-export interface UserDetails {
-  gender: string;
+export interface UserDetailsResponse {
   name: Name;
   location: Location;
   phone: string;
