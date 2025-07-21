@@ -14,11 +14,3 @@ export interface RestaurantDetails {
 	type: string;
 	parkingLot: boolean;
 }
-
-export interface RestaurantDetails {
-	restaurantID: number;
-	restaurantName: string;
-	address: string;
-	type: string;
-	parkingLot: boolean;
-}
