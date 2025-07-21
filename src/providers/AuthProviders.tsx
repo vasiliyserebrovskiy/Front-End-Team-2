@@ -25,7 +25,10 @@ async function fetchUserDetailsFromApi(): Promise<UserDetailsResponse> {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<User>();
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  //const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const [isAuthorized, setIsAuthorized] = useState(() => {
+    return localStorage.getItem("isAuthorized") === "true";
+  });
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [userDetails, setUserDetails] = useState<UserDetails>();
 
@@ -34,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userDetails: UserDetails = mapUserDetails(userDetailsObj);
     setUserDetails(userDetails);
   }, []);
-
+  //For login and logout
   useEffect(() => {
     if (isAuthorized) {
       fetchUserDetails();
@@ -46,6 +49,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.removeItem("isAuthorized");
     }
   }, [isAuthorized, fetchUserDetails]);
+
+  //For refresh page we need to restore our state
+  // useEffect(() => {
+  //   console.log("Page was refreshed!");
+  //   if (localStorage.getItem("isAuthorized")) {
+
+  //   }
+  // });
 
   return (
     <AuthContext.Provider
