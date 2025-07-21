@@ -9,10 +9,13 @@ import Users from "./pages/Users/Users";
 import Signup from "./pages/Signup/Signup";
 import NotFound from "./pages/NotFound/NotFound";
 import Cart from "./pages/Cart/Cart";
+import ProductPage from './pages/ProductPage/ProductPage';
+import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import { AuthProvider } from "./providers/AuthProviders";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import ChangeUserPassword from "./pages/ChangeUserPassword/ChangeUserPassword";
+import ProductsInShop from "./pages/ProductsInShop/ProductsInShop";
 
 function App() {
   return (
@@ -23,8 +26,10 @@ function App() {
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/shops/:restaurantId/products" element={<ProductsInShop />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/products" element={<Products />} />
+              <Route path='/products/:type?' element={<Products />} />
+							<Route path={'/product/:id'} element={<ProductPage />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/users" element={<Users />} />
               <Route path="/sign-up" element={<Signup />} />
@@ -32,6 +37,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/change-password" element={<ChangeUserPassword />} />
+              <Route path="/categories/:type" element={<CategoryPage />} />
             </Route>
           </Routes>
         </AuthProvider>
