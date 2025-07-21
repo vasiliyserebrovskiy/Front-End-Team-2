@@ -10,7 +10,6 @@ import Signup from "./pages/Signup/Signup";
 import NotFound from "./pages/NotFound/NotFound";
 import Cart from "./pages/Cart/Cart";
 import ProductPage from './pages/ProductPage/ProductPage';
-import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import { AuthProvider } from "./providers/AuthProviders";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
@@ -37,7 +36,6 @@ function App() {
               <Route path="*" element={<NotFound />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/change-password" element={<ChangeUserPassword />} />
-              <Route path="/categories/:type" element={<CategoryPage />} />
             </Route>
           </Routes>
         </AuthProvider>

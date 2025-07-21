@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import type { RestaurantDetails } from "../Products/types";
 
 const categoryDescriptions: Record<string, string> = {
   "Biryani": "Spicy rice-based Indian dish.",
@@ -18,14 +19,6 @@ const categoryImages: Record<string, string> = {
     "https://deinmg.de/wp-content/uploads/2021/06/KFH-1-Restaurant-credit-mgmg-klein-4.jpg",
 };
 
-interface Restaurant {
-  restaurantID: number;
-  restaurantName: string;
-  address: string;
-  type: string;
-  parkingLot: boolean;
-}
-
 const Categories = () => {
   const [categories, setCategories] = useState<string[]>([]);
 
@@ -37,7 +30,7 @@ const Categories = () => {
     const res = await fetch(
       "https://corsproxy.io/?https://fakerestaurantapi.runasp.net/api/Restaurant"
     );
-    const data: Restaurant[] = await res.json();
+    const data: RestaurantDetails[] = await res.json();
     const types = [...new Set(data.map((r) => r.type))];
     setCategories(types);
   }
@@ -54,23 +47,20 @@ const Categories = () => {
 
           return (
             <Link
-              to={`/categories/${encodeURIComponent(type)}`}
+              to={`/products/${encodeURIComponent(type)}`}
               key={type}
-              className="group relative block h-48 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-transform hover:-translate-y-1"
+              className="border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-transform hover:-translate-y-1 block w-full"
             >
-              {/* Фон-картинка */}
+              {/* Картинка */}
               <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+                className="h-48 bg-cover bg-center"
                 style={{ backgroundImage: `url(${image})` }}
               ></div>
 
-              {/* Полупрозрачное затемнение */}
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/60 transition-colors duration-300"></div>
-
-              {/* Текст поверх затемнения */}
-              <div className="relative z-10 flex flex-col justify-end h-full p-4 text-white">
-                <h3 className="text-lg font-semibold">{type}</h3>
-                <p className="text-sm">{description}</p>
+              {/* Белый блок с текстом */}
+              <div className="bg-white p-4">
+                <h3 className="text-lg font-semibold text-gray-900">{type}</h3>
+                <p className="text-sm text-gray-600">{description}</p>
               </div>
             </Link>
           );
