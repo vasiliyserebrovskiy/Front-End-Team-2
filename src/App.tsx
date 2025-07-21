@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import Cart from "./pages/Cart/Cart";
 import { AuthProvider } from "./providers/AuthProviders";
 import Login from "./pages/Login/Login";
+import ProductsInShop from "./pages/ProductsInShop/ProductsInShop";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/shops/:restaurantId/products" element={<ProductsInShop />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/products" element={<Products />} />
               <Route path="/cart" element={<Cart />} />
