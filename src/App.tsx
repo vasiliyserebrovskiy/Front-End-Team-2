@@ -13,8 +13,9 @@ import ProductPage from './pages/ProductPage/ProductPage';
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
 import { AuthProvider } from "./providers/AuthProviders";
 import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
+import ChangeUserPassword from "./pages/ChangeUserPassword/ChangeUserPassword";
 import ProductsInShop from "./pages/ProductsInShop/ProductsInShop";
-
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
               <Route path="/sign-up" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/change-password" element={<ChangeUserPassword />} />
               <Route path="/categories/:type" element={<CategoryPage />} />
             </Route>
           </Routes>
