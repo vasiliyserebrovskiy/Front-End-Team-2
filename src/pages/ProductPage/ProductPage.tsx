@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../utils/priceUtils';
 import type { RestaurantDetails } from '../Products/types';
+import { useCart } from '../../context/CartContext';
 
 export interface Product {
 	itemID: number;
@@ -37,6 +38,7 @@ export default function ProductPage() {
 	const [restaurantType, setRestaurantType] = useState<string>('');
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const { addToCart } = useCart();
 
 	useEffect(() => {
 		async function fetchData() {
@@ -113,7 +115,17 @@ export default function ProductPage() {
 						</div>
 						<div className='flex md:flex-row flex-col md:justify-start justify-center items-center gap-3 mt-6'>
 							<span className='text-yellow-500 font-extrabold text-4xl'>€{formatPrice(product.itemPrice)}</span>
-							<Link to={`/card/${product.itemID}`} className='bg-pink-500 hover:bg-pink-600 hover:scale-108 text-white px-4 py-2 ml-1 rounded-full font-semibold transition transform hover:shadow-2xs'>
+							{/* to={`/card/${product.itemID}`} 
+              onClick={() => addToCart(product)}
+              */}
+							<Link
+								to='#'
+								className='bg-pink-500 hover:bg-pink-600 hover:scale-108 text-white px-4 py-2 ml-1 rounded-full font-semibold transition transform hover:shadow-2xs'
+								onClick={e => {
+									e.preventDefault(); // prevent default link behavior
+									addToCart(product); // add to cart
+								}}
+							>
 								Add to <span className='leading-none brightness-200 contrast-200 text-[20px]'>🛒</span>
 							</Link>
 						</div>
