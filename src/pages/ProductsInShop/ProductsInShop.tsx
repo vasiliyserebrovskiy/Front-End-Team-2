@@ -70,7 +70,7 @@ export default function ProductsInShop() {
               </h3>
               <p className="text-gray-600 mb-3">{item.itemDescription}</p>
               <p className="text-lg font-medium text-blue-600">
-                ₹{item.itemPrice}
+                €{item.itemPrice}
               </p>
             </div>
           </div>
