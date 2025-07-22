@@ -39,7 +39,7 @@ export default function ProductPage() {
 	const [restaurantType, setRestaurantType] = useState<string>('');
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const { addToCart } = useCart();
+  const { addOne } = useCart();
 
 	useEffect(() => {
 		async function fetchData() {
@@ -123,8 +123,8 @@ export default function ProductPage() {
 								to='#'
 								className='bg-pink-500 hover:bg-pink-600 hover:scale-108 text-white px-4 py-2 ml-1 rounded-full font-semibold transition transform hover:shadow-2xs'
 								onClick={e => {
-									e.preventDefault(); // no page reload
-									addToCart(product); // add to cart
+									e.preventDefault();
+									addOne(product);
 
 									const imgEl = document.querySelector('.product-image-big');
 									const cartEl = document.querySelector('#cart-icon');

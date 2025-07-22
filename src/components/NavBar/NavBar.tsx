@@ -7,6 +7,7 @@ export default function NavBar() {
 	const { authUser, setIsAuthorized, isAuthorized } = useAuthUser();
 	const navigate = useNavigate();
 	const { cart } = useCart();
+  const cartCount = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
 
 	const handleLogout = () => {
 		setIsAuthorized(false);
@@ -31,8 +32,8 @@ export default function NavBar() {
 				</NavLink>
 				<NavLink to='/cart' className='relative hover:text-pink-600 transition'>
 					Cart
-					<span id='cart-icon' className={`absolute -top-2 -right-3 px-2 rounded-full text-xs transition-opacity duration-300 ${cart.length > 0 ? 'bg-pink-500 text-white opacity-100' : 'opacity-0 pointer-events-none'}`}>
-						{cart.length}
+					<span id='cart-icon' className={`absolute -top-2 -right-3 px-2 rounded-full text-xs transition-opacity duration-300 ${cartCount > 0 ? 'bg-pink-500 text-white opacity-100' : 'opacity-0 pointer-events-none'}`}>
+						{cartCount}
 					</span>
 				</NavLink>
 				{isAuthorized && (

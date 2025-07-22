@@ -2,47 +2,95 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Product } from '../pages/Products/types';
 
+type CartItem = {
+	product: Product;
+	quantity: number;
+};
+
+type CartMap = Record<number, CartItem>;
 
 type CartContextType = {
-	cart: Product[];
-	addToCart: (item: Product) => void;
-	removeFromCart: (id: number) => void;
+	cart: CartMap;
+	addOne: (product: Product) => void;
+	removeOne: (id: number) => void;
+	removeAll: (id: number) => void;
 	clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-	const [cart, setCart] = useState<Product[]>(() => {
-		const stored = localStorage.getItem('cart');
-		return stored ? JSON.parse(stored) : [];
-	});
+export const CartProvider = ({ children }: { children: ReactNode }) => {
+const [cart, setCart] = useState<CartMap>(() => {
+	const stored = localStorage.getItem('cart');
+	try {
+		const parsed = stored ? JSON.parse(stored) : {};
+		if (typeof parsed !== 'object' || parsed === null) throw new Error('Invalid format');
+
+		// доп. проверка на корректность структуры cart
+		for (const key in parsed) {
+			const item = parsed[key];
+			if (typeof item !== 'object' || typeof item.quantity !== 'number' || typeof item.product?.itemID !== 'number') {
+				throw new Error('Corrupted item');
+			}
+		}
+
+		return parsed;
+	} catch (err) {
+		console.warn('⚠️ Invalid cart data. Resetting cart.', err);
+		localStorage.removeItem('cart');
+		return {};
+	}
+});
 
 	useEffect(() => {
 		localStorage.setItem('cart', JSON.stringify(cart));
 	}, [cart]);
 
-	const addToCart = (product: Product) => {
-		setCart(prev => [...prev, product]);
+	const addOne = (product: Product) => {
+		setCart(prev => {
+			const current = prev[product.itemID];
+			return {
+				...prev,
+				[product.itemID]: {
+					product,
+					quantity: current ? current.quantity + 1 : 1,
+				},
+			};
+		});
 	};
 
-	const removeFromCart = (id: number) => {
-		setCart(prev => prev.filter(p => p.itemID !== id));
+	const removeOne = (id: number) => {
+		setCart(prev => {
+			const current = prev[id];
+			if (!current) return prev;
+			if (current.quantity <= 1) {
+				const { [id]: _, ...rest } = prev;
+				return rest;
+			}
+			return {
+				...prev,
+				[id]: {
+					...current,
+					quantity: current.quantity - 1,
+				},
+			};
+		});
 	};
 
-	const clearCart = () => {
-		setCart([]);
+	const removeAll = (id: number) => {
+		setCart(prev => {
+			const { [id]: _, ...rest } = prev;
+			return rest;
+		});
 	};
 
-	return <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>{children}</CartContext.Provider>;
+	const clearCart = () => setCart({});
+
+	return <CartContext.Provider value={{ cart, addOne, removeOne, removeAll, clearCart }}>{children}</CartContext.Provider>;
 };
-
-
 
 export const useCart = () => {
 	const context = useContext(CartContext);
-	if (!context) {
-		throw new Error('useCart must be used within CartProvider');
-	}
+	if (!context) throw new Error('useCart must be used within CartProvider');
 	return context;
 };
