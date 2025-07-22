@@ -43,9 +43,9 @@ export default function Products() {
 
 			setContainerWidthClass(filtered.length % 6 === 0 ? 'w-[90%]' : 'w-[70%]');
 			setProducts(filtered);
-		} catch (err) {
+		} catch (err) { 
 			console.error('Fetch error:', err);
-			setProducts([]);
+			setProducts([]); 
 		}
 	}
 
