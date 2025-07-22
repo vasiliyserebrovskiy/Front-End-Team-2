@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { formatPrice } from '../../utils/priceUtils';
 import type { Product, RestaurantDetails } from './types';
-import styles from './Products.module.css';
+// import styles from './Products.module.css';
 
 export default function Products() {
 	const [products, setProducts] = useState<Product[]>([]);
