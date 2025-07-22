@@ -1,7 +1,9 @@
+
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { formatPrice } from '../../utils/priceUtils';
+
 
 interface Shops {
 	restaurantID: number;

@@ -5,6 +5,7 @@ import type { Product, RestaurantDetails } from './types';
 import { useCart } from '../../context/CartContext';
 import { animateFlyToCart } from './animateToCart';
 
+
 export default function Products() {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [containerWidthClass, setContainerWidthClass] = useState('w-[70%]');
