@@ -24,39 +24,49 @@ async function fetchUserDetailsFromApi(): Promise<UserDetailsResponse> {
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [authUser, setAuthUser] = useState<User>();
-  //const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const [authUser, setAuthUser] = useState<User | undefined>(() => {
+    const stored = localStorage.getItem("authUser");
+    return stored ? JSON.parse(stored) : undefined;
+  });
+
   const [isAuthorized, setIsAuthorized] = useState(() => {
     return localStorage.getItem("isAuthorized") === "true";
   });
   const [successMessage, setSuccessMessage] = useState<string>("");
-  const [userDetails, setUserDetails] = useState<UserDetails>();
+  const [userDetails, setUserDetails] = useState<UserDetails | undefined>(
+    () => {
+      const stored = localStorage.getItem("userDetails");
+      return stored ? JSON.parse(stored) : undefined;
+    }
+  );
 
   const fetchUserDetails = useCallback(async () => {
     const userDetailsObj: UserDetailsResponse = await fetchUserDetailsFromApi();
     const userDetails: UserDetails = mapUserDetails(userDetailsObj);
     setUserDetails(userDetails);
+    localStorage.setItem("userDetails", JSON.stringify(userDetails));
   }, []);
-  //For login and logout
+
   useEffect(() => {
     if (isAuthorized) {
-      fetchUserDetails();
+      const storedDetails = localStorage.getItem("userDetails");
+      if (
+        !storedDetails ||
+        storedDetails === "undefined" ||
+        storedDetails === ""
+      ) {
+        fetchUserDetails();
+      }
     } else {
       setAuthUser(undefined);
       setUserDetails(undefined);
       setSuccessMessage("");
-      localStorage.removeItem("usercode");
-      localStorage.removeItem("isAuthorized");
+
+      ["usercode", "isAuthorized", "authUser", "userDetails"].forEach((key) =>
+        localStorage.removeItem(key)
+      );
     }
   }, [isAuthorized, fetchUserDetails]);
-
-  //For refresh page we need to restore our state
-  // useEffect(() => {
-  //   console.log("Page was refreshed!");
-  //   if (localStorage.getItem("isAuthorized")) {
-
-  //   }
-  // });
 
   return (
     <AuthContext.Provider
